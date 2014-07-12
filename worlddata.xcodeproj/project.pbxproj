@@ -227,6 +227,7 @@
 				2AD9EC611971BA8600ADA9CA /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
