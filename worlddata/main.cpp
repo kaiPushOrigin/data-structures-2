@@ -1,86 +1,104 @@
-//worlddata.cpp
-/*
- Author: Kashif Kashif
- Assignment No.: 0 - Bonus Assignment
- Algorithm Used : Linear Search
- */
-
+// Binary Search Tree - Implemenation in C++
+// Simple program to create a BST of integers and search an element in it
+#include<iostream>
 #include <string>
-#include <iostream>
 #include <vector>
 #include <sstream>
 #include <fstream>
 
 using namespace std;
-
-int linear_search(
-                  string &location,         //in
-                  vector<string> &a  //in
-);
-
-int main(int argc, char* argv[])
+//Definition of Node for Binary search tree
+struct node
 {
-    string location;                         //name of the country
-    vector<string> data, data_stream;
-    string store;
-    string store_stream;
-    int lines=0;                             //counts no. of lines
-    ifstream inFile("consumption.txt");
-    while(getline(inFile, store))
+    int key_value, lineNumber;
+    char *word;
+    struct node *left,*right;
+};
+
+struct node *inserttree(struct node *tree,char *s, int lineNumber)
+{
+    int i;
+    
+    if (tree==NULL)
     {
-        data.push_back(store);
-        lines++;
+        if ( ( tree = (struct node *) malloc( sizeof(struct node) ) ) !=NULL)
+        {
+            if ((tree->word=(char *) malloc(strlen(s)+1))==NULL)
+            {
+                free(tree);
+                tree=NULL;
+            }
+            else
+            {
+                tree->left=NULL;
+                tree->right=NULL;
+                strcpy(tree->word,s);
+                tree->lineNumber = lineNumber ;
+            }
+        }
     }
     
-    for(vector<string>::size_type i=0; i<data.size(); ++i)
+    else if ((i=strcmp(tree->word,s))>0)
     {
-        istringstream stream(data.at(i));           //string buffer
-        while (!stream.eof())
-        {
-            getline(stream, store_stream, ',');
-            data_stream.push_back(store_stream);
-        }
+        tree->left=inserttree(tree->left,s, lineNumber);
+    }
+    else if (i<0)
+    {
+        tree->right=inserttree(tree->right,s, lineNumber);
     }
     
-    cout <<"Initialising from consumption.txt: "<< lines <<" lines, "
-    <<(lines-3)<<" records\n";
-    do
-    {
-        cout<<"\nPlease enter the name of a country of interest: ";
-        cin>>location;
-        if(location=="Quit")
-        {
-            break;
-        }
-        int index;
-        index=linear_search(location,data_stream);
-        if(index==-1)
-        {
-            cout<<"\nNo data found for "<<location<<endl;
-        }
-        else
-        {
-            cout<<"> Average total consumption per person: "<<data_stream.at(index+1)
-            <<" litres\n";
-            cout<<"> "<<data_stream.at(index+4) <<"%  Beer, "
-            <<data_stream.at(index+5) <<"% Wine, "
-            <<data_stream.at(index+6) <<"% Spirits, "
-            <<data_stream.at(index+7) <<"% Other" <<endl;
-        }
-    }while(location!="Quit");
+    return tree;
 }
 
-int linear_search(
-                  string &a,             //in
-                  vector<string> &v      //in
-)
+void printtree(struct node *tree)
 {
-    for(int i=0; i<(int)v.size(); ++i)
+    
+    if (tree!=NULL)
     {
-        if(v.at(i)== a)
-        {
-            return i;
-        }
+        printtree(tree->left);
+        printf("%s %d\n",tree->word, tree->lineNumber);
+        
+        printtree(tree->right);
     }
-    return -1;  
+}
+
+//int search(struct node *tree)
+//{
+//  int key;
+//  tree->right->key_value = key;
+//  return key;
+//}
+
+void freetree(struct node *tree)
+{
+    if (tree!=NULL)
+    {
+        free(tree->word);
+        freetree(tree->left);
+        freetree(tree->right);
+        free(tree);
+    }
+}
+
+int main(void)
+{
+    FILE *f;
+    char s[1024]; /*assumes a word cannot be longer than 1023 chars*/
+    struct node *tree=NULL;
+    int line = 1;
+    
+    if ((f=fopen("consumption.txt","r"))==NULL)
+        printf("Unable to open Test.txt\n");
+    else
+    {
+        while (fscanf(f,"%1023s",s)!=EOF)
+            tree=inserttree(tree,s, line++);
+        fclose(f);
+        
+        printtree(tree);  //moved from inserttree
+        freetree(tree);
+    }
+    
+    system("pause");
+    return 0;
 }
