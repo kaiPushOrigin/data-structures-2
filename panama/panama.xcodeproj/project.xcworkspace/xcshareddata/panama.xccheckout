@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>1D436B0E-E8FE-444E-8E84-6A81978841BD</string>
+	<key>IDESourceControlProjectName</key>
+	<string>panama</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>C57AD4D5-7E42-46E5-8F58-6CB04DB5D6B0</key>
+		<string>https://github.com/kashifkai28/data-structures-2.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>panama/panama.xcodeproj/project.xcworkspace</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>C57AD4D5-7E42-46E5-8F58-6CB04DB5D6B0</key>
+		<string>../../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>https://github.com/kashifkai28/data-structures-2.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>110</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>C57AD4D5-7E42-46E5-8F58-6CB04DB5D6B0</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>C57AD4D5-7E42-46E5-8F58-6CB04DB5D6B0</string>
+			<key>IDESourceControlWCCName</key>
+			<string>data-structures-2</string>
+		</dict>
+	</array>
+</dict>
+</plist>
