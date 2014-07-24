@@ -1,13 +1,15 @@
-
-
-
 #include<iostream>
+#include <string>
+#include <iostream>
+#include <vector>
+#include <sstream>
+#include <fstream>
 
 using namespace std;
 class Patient
 {
 public:
-    string name, notes;
+    string name, notes, total;
     int priority;
 };
 
@@ -20,7 +22,14 @@ int heapsize;
 
 int main()
 {
+    string b[] = {"hello", "hi"};
+    cout << b[0][0];
+    int i = 1;
+    int parent = (i-1)/2;
+    cout << parent;
     Patient pat;
+	string name;
+	string priority;
 	int patientsWaiting = 0;
     int size,n;
     cout<<"enter array size"<<endl;
@@ -50,6 +59,9 @@ int main()
                 cout << "\nNotes: ";
                 cin >> pat.notes;
                 patientsWaiting++;
+				priority = to_string(pat.priority);
+				pat.total = string(priority) +string(pat.name) + string(pat.notes);
+				cout << pat.total;
                 maxheapinsert(a,pat);
                 break;
             case 2:
@@ -69,15 +81,15 @@ void heapmax(int *a, Patient pat) //no object
         exit(1);
     }
     cout << (a[0]) << endl;
-    cout << pat.priority;
+    //cout << pat.priority;
     //cout << "hi" << endl;
     //pat.priority = a[0];
     //cout << pat.name;
-    if(pat.priority ==a[0])
-    {
-        cout << "True";
-        //cout << pat.priority << " " << pat.name;
-    }
+    //if(pat.priority ==a[0])
+    //{
+    //    cout << "True";
+    //    //cout << pat.priority << " " << pat.name;
+    //}
 }
 int heapextractmax(int *a, Patient pat)  //no object
 {
@@ -114,13 +126,13 @@ void heapincreasekey(int *a,int i,Patient pat)
     }
 }
 void maxheapinsert(int *a,Patient pat)
-//a = array size
-//key = number
+////a = array size
+///key = number
 {
     a[heapsize]=-1;
     heapsize=heapsize+1;
     cout << "Name = " << pat.name;
-    
+
     heapincreasekey(a,heapsize-1,pat);
 }
 void maxheapify(int *a,int i, Patient pat)  //no object
