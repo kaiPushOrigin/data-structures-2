@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>3E24FA18-DA44-4B61-B71C-AC379E81DD81</string>
+	<key>IDESourceControlProjectName</key>
+	<string>cinematatistic</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>B49F2A8A-687E-4945-8164-C5294E417D8A</key>
+		<string>https://github.com/kashifkai28/data-structures-2.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>cinematatistic/cinematatistic.xcodeproj/project.xcworkspace</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>B49F2A8A-687E-4945-8164-C5294E417D8A</key>
+		<string>../../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>https://github.com/kashifkai28/data-structures-2.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>110</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>B49F2A8A-687E-4945-8164-C5294E417D8A</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>B49F2A8A-687E-4945-8164-C5294E417D8A</string>
+			<key>IDESourceControlWCCName</key>
+			<string>data-structures-2</string>
+		</dict>
+	</array>
+</dict>
+</plist>
