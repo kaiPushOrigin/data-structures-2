@@ -9,6 +9,7 @@
 #include <iostream>
 #include <fstream>
 #include <cstdio>
+#include <cctype>
 #include <vector>
 
 using namespace std;
@@ -69,7 +70,8 @@ int hashFunction(string key)
     location = key.length();
     for(int i = 0; i < key.length(); i++)
     {
-        hash = hash + int(key[i]);
+        hash = hash + int(char(tolower(key[i])));
+        cout << int(char(tolower(key[i]))) << endl;
     }
     location = hash % tableSize;
     return location;
@@ -104,7 +106,7 @@ void Additem(movie movies[], string key, int indexValue)
     }
     else
     {
-        movieList* Ptr = HashTable[location];
+        movieList* Ptr = HashTable[location];  //Link other items
         movieList* n = new movieList;
         n->name = movies[indexValue].name;
         n->summary = movies[indexValue].summary;
@@ -117,9 +119,9 @@ void Additem(movie movies[], string key, int indexValue)
         n->goldenGlobes = movies[indexValue].goldenGlobes;
         n->goldenGlobeNominations = movies[indexValue].goldenGlobeNominations;
         n->next = NULL;
-        while (Ptr->next != NULL)
+        while (Ptr->next != NULL)   // the next eement is not pointing to null
         {
-            Ptr = Ptr->next;
+            Ptr = Ptr->next;        //make pointer advance down the list
         }
         Ptr->next = n;
     }
@@ -168,25 +170,40 @@ void PrintItemsInIndex(int index)
 
 void FindData(string name)
 {
-    int index = hashFunction(name);
+    string lowerName = name;
+    string hashCopy;
+    for (int i = 0; i < name.length(); i++)
+    {
+        char(tolower(lowerName[i]));
+        
+    }
+    int index = hashFunction(lowerName);
     bool foundName = false;
-    string director;
     movieList* Ptr = HashTable[index];
+    string movName;
+    string movDirector;
+    string movStars;
+    string movSummary;
+    
     while(Ptr != NULL)
     {
-        if(Ptr->name == name)
+        if((Ptr->name) == name)
         {
             foundName = true;
             
-            director = Ptr->director;
-            cout << "YESSS";
+            movName = Ptr->name;
+            movSummary = Ptr->summary;
+            movDirector = Ptr->director;
+            movStars = Ptr->stars;
         }
         Ptr = Ptr->next;
     }
     if(foundName == true)
     {
-        
-        cout << "Director = " << director << endl;
+        cout << movName << endl;
+        cout << movDirector << endl;
+        cout << movStars << endl;
+        cout << movSummary << endl;
     }
     else
     {
