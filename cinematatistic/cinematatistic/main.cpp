@@ -71,20 +71,11 @@ int hashFunction(string key)
     for(int i = 0; i < key.length(); i++)
     {
         hash = hash + int(char(tolower(key[i])));
-        cout << int(char(tolower(key[i]))) << endl;
+       // cout << int(char(tolower(key[i]))) << endl;
     }
     location = hash % tableSize;
     return location;
     
-    //for (int i = 0; i < n; i++)
-    //{
-       // hash = 0;
-        //for (int j = 0; j < movies[i].nameLength; j++)
-       // {
-         //   hash = hash + int(movies[i].name[j]);
-        //}
-        //location = hash % tableSize;
-   // }
 }
 
 void Additem(movie movies[], string key, int indexValue)
@@ -119,7 +110,7 @@ void Additem(movie movies[], string key, int indexValue)
         n->goldenGlobes = movies[indexValue].goldenGlobes;
         n->goldenGlobeNominations = movies[indexValue].goldenGlobeNominations;
         n->next = NULL;
-        while (Ptr->next != NULL)   // the next eement is not pointing to null
+        while (Ptr->next != NULL)   // the next element is not pointing to null
         {
             Ptr = Ptr->next;        //make pointer advance down the list
         }
@@ -157,7 +148,7 @@ void PrintItemsInIndex(int index)
     }
     else
     {
-        cout << "index " << index << " contains the following items\n";
+       // cout << "index " << index << " contains the following items\n";
         while(Ptr!=NULL)
         {
             cout << Ptr->name << endl;
@@ -180,21 +171,23 @@ void FindData(string name)
     int index = hashFunction(lowerName);
     bool foundName = false;
     movieList* Ptr = HashTable[index];
-    string movName;
-    string movDirector;
-    string movStars;
-    string movSummary;
+    string movName, movDirector, movStars, movSummary;
+    string movOscars, movBafta, movGoldenGlobe;
     
     while(Ptr != NULL)
     {
         if((Ptr->name) == name)
         {
             foundName = true;
-            
             movName = Ptr->name;
             movSummary = Ptr->summary;
             movDirector = Ptr->director;
             movStars = Ptr->stars;
+            movOscars = Ptr->oscars;
+            movBafta = Ptr->baftaAwards;
+            movGoldenGlobe = Ptr->goldenGlobes;
+            
+            
         }
         Ptr = Ptr->next;
     }
@@ -202,8 +195,10 @@ void FindData(string name)
     {
         cout << movName << endl;
         cout << movDirector << endl;
-        cout << movStars << endl;
-        cout << movSummary << endl;
+        cout << movStars;
+        cout << movSummary;
+        cout << movOscars << " Oscar(s)" << movBafta << " BAFTA(s)"
+        << movGoldenGlobe << " Golden Globe(s)" <<endl;
     }
     else
     {
@@ -225,7 +220,12 @@ void PrintHashTable()
     }
 }
 
-
+string parseNumber(string value)
+{
+    std:: size_t pos = value.find(":");
+    string answer = value.substr(pos+1, 3);
+    return answer;
+}
 
 int main()
 {
@@ -248,7 +248,7 @@ int main()
                 //string movieYear = line.substr(pos-1, 2);
                 movies[indexValue].name = movieName;
                 //movies[indexValue].year = movieName;
-                cout << movieName<<endl;
+               // cout << movieName<<endl;
                 //cout << movieYear << endl;
                 movies[indexValue].nameLength = movies[indexValue].name.length();
                 name = movies[indexValue].name;
@@ -257,11 +257,11 @@ int main()
 			case 1: movies[indexValue].summary = line; break;
 			case 2: movies[indexValue].director = line; break;
 			case 3: movies[indexValue].stars = line; break;
-			case 4: movies[indexValue].oscars = line; break;
+			case 4: movies[indexValue].oscars = parseNumber(line); break;
 			case 5: movies[indexValue].oscarNominations = line; break;
-			case 6: movies[indexValue].baftaAwards = line; break;
+			case 6: movies[indexValue].baftaAwards = parseNumber(line); break;
 			case 7: movies[indexValue].baftaNominations = line; break;
-			case 8: movies[indexValue].goldenGlobes = line; break;
+			case 8: movies[indexValue].goldenGlobes = parseNumber(line); break;
 			case 9: movies[indexValue].goldenGlobeNominations = line; break;
 			case 10:
             {
@@ -277,21 +277,18 @@ int main()
 	}
     
     //PrintItemsInIndex(5);
-    PrintHashTable();
+    //PrintHashTable();
     string key = " ";
     while(key != "exit")
     {
         cout << "Search for ?";
         getline(cin,key,'\n');
-        cout << key;
         if(key != "exit")
         {
             FindData(key);
         }
     }
     
-    
-   
     //hashFunction(movies, indexValue);
 	//display(movies, indexValue);
     //cout <<  movies[5].name;

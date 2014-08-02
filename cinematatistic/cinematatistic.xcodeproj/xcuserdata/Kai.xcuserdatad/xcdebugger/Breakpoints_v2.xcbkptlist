@@ -10,11 +10,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "cinematatistic/main.cpp"
-            timestampString = "428478908.323807"
+            timestampString = "428633724.286103"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "302"
-            endingLineNumber = "302">
+            startingLineNumber = "298"
+            endingLineNumber = "298">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>
