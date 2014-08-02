@@ -25,7 +25,7 @@ public:
 };
 
 struct movieList {
-    string name, summary, director, stars;
+    string name, year, summary, director, stars;
 	string oscars, oscarNominations, baftaAwards, baftaNominations;
 	string goldenGlobes, goldenGlobeNominations, space;
     int nameLength;
@@ -34,22 +34,13 @@ struct movieList {
 
 movieList* HashTable[tableSize];
 
- //Global Variable
-
-void display(movie movies[], int n)
-{
- for (int i = 0; i < n; i++)
- {
-        cout << "The lenght of " << movies[i].name << " is " << movies[i].nameLength << endl;
- }
-}
-
 void CreateHashTable()
 {
     for (int i = 0; i < tableSize; i++)
     {
         HashTable[i] = new movieList;
         HashTable[i]->name = "empty";
+        HashTable[i]->year = "empty";
         HashTable[i]->summary = "empty";
         HashTable[i]->director = "empty";
         HashTable[i]->stars = "empty";
@@ -68,10 +59,15 @@ int hashFunction(string key)
     int hash = 0;
     int location;
     location = key.length();
+    string lowerCaseKey = key;
+    for (int i = 0; i < key.length(); i++)
+    {
+        lowerCaseKey[i] = char(tolower(lowerCaseKey[i]));
+        
+    }
     for(int i = 0; i < key.length(); i++)
     {
-        hash = hash + int(char(tolower(key[i])));
-       // cout << int(char(tolower(key[i]))) << endl;
+        hash = hash + int(char(lowerCaseKey[i]));
     }
     location = hash % tableSize;
     return location;
@@ -80,11 +76,11 @@ int hashFunction(string key)
 
 void Additem(movie movies[], string key, int indexValue)
 {
-    //string name = movies[indexValue].name;
     int location = hashFunction(key);
     if(HashTable[location]->name == "empty")
     {
         HashTable[location]->name = movies[indexValue].name;
+        HashTable[location]->year = movies[indexValue].year;
         HashTable[location]->summary = movies[indexValue].summary;
         HashTable[location]->director = movies[indexValue].director;
         HashTable[location]->stars = movies[indexValue].stars;
@@ -100,6 +96,7 @@ void Additem(movie movies[], string key, int indexValue)
         movieList* Ptr = HashTable[location];  //Link other items
         movieList* n = new movieList;
         n->name = movies[indexValue].name;
+        n->year = movies[indexValue].year;
         n->summary = movies[indexValue].summary;
         n->director = movies[indexValue].director;
         n->stars = movies[indexValue].stars;
@@ -116,67 +113,34 @@ void Additem(movie movies[], string key, int indexValue)
         }
         Ptr->next = n;
     }
-    //cout << "Item found for " << HashTable[12]->name;
-}
-
-int numberOfItemsInLocation(int index)
-{
-    int count = 0;
-    if(HashTable[index]->name == "empty")
-    {
-        return count;
-    }
-    else
-    {
-        count++;
-        movieList* Ptr = HashTable[index];
-        while(Ptr->next!= NULL)
-        {
-            count++;
-            Ptr = Ptr->next;
-        }
-    }
-    return count;
-}
-
-void PrintItemsInIndex(int index)
-{
-    movieList* Ptr = HashTable[index];
-    if(Ptr->name == "empty")
-    {
-        cout << index << "is empty";
-    }
-    else
-    {
-       // cout << "index " << index << " contains the following items\n";
-        while(Ptr!=NULL)
-        {
-            cout << Ptr->name << endl;
-            cout << Ptr->director << endl;
-            Ptr = Ptr->next;
-        }
-    }
-    
 }
 
 void FindData(string name)
 {
     string lowerName = name;
-    string hashCopy;
+    
+    // make the entered name lowercase and send to hashfunction to see its location
     for (int i = 0; i < name.length(); i++)
     {
-        char(tolower(lowerName[i]));
-        
+       lowerName[i] = char(tolower(lowerName[i]));
     }
     int index = hashFunction(lowerName);
+    
     bool foundName = false;
-    movieList* Ptr = HashTable[index];
+    movieList* Ptr = HashTable[index];           // Pointer to its location in Hash Table
     string movName, movDirector, movStars, movSummary;
-    string movOscars, movBafta, movGoldenGlobe;
+    string movOscars, movBafta, movGoldenGlobe, movYear;
+    
+    // lowercase the actual value in the Hash Table and compare it with the value entered
+    string compareCase = Ptr->name;
+    for (int i = 0; i < Ptr->name.length(); i++)
+    {
+        compareCase[i] = char(tolower(compareCase[i]));
+    }
     
     while(Ptr != NULL)
     {
-        if((Ptr->name) == name)
+        if(Ptr->name == name || name == compareCase)
         {
             foundName = true;
             movName = Ptr->name;
@@ -186,38 +150,25 @@ void FindData(string name)
             movOscars = Ptr->oscars;
             movBafta = Ptr->baftaAwards;
             movGoldenGlobe = Ptr->goldenGlobes;
-            
-            
+            movYear = Ptr->year;
         }
         Ptr = Ptr->next;
     }
-    if(foundName == true)
+   if(foundName == true)
     {
         cout << movName << endl;
+        cout << movYear << ";" << movOscars << " Oscar(s)" << movBafta << " BAFTA(s)"
+        << movGoldenGlobe << " Golden Globe(s)" << endl;
         cout << movDirector << endl;
         cout << movStars;
-        cout << movSummary;
-        cout << movOscars << " Oscar(s)" << movBafta << " BAFTA(s)"
-        << movGoldenGlobe << " Golden Globe(s)" <<endl;
+        cout << movSummary << "\n\n";
+
     }
     else
     {
-        cout << "Not Found";
+        cout << "That is a great movie, but it is not one of the top 100. \n\n";
     }
     
-}
-
-void PrintHashTable()
-{
-    int number;
-    for(int i = 0; i < tableSize; i++)
-    {
-        number = numberOfItemsInLocation(i);
-        cout << "index = " << i << endl;
-        cout << HashTable[i]->name << endl;
-        cout << HashTable[i]->director << endl;
-        cout << "Number of items = " << number << "\n\n\n" << endl;
-    }
 }
 
 string parseNumber(string value)
@@ -231,7 +182,7 @@ int main()
 {
     CreateHashTable();
     int indexValue = 0;
-	movie  movies[1100];
+	movie  movies[1100]; // 100 movies, each having 11 lines
 	int count = 0;
     string name;
 	string line, token, input;
@@ -245,11 +196,9 @@ int main()
             {
                 std::size_t pos = line.find("(");
                 string movieName = line.substr(0, pos-1);
-                //string movieYear = line.substr(pos-1, 2);
+                string movieYear = line.substr(pos+1, 4);
                 movies[indexValue].name = movieName;
-                //movies[indexValue].year = movieName;
-               // cout << movieName<<endl;
-                //cout << movieYear << endl;
+                movies[indexValue].year = movieYear;
                 movies[indexValue].nameLength = movies[indexValue].name.length();
                 name = movies[indexValue].name;
                 break;
@@ -266,7 +215,6 @@ int main()
 			case 10:
             {
                 movies[indexValue].space = line; count = -1; indexValue++;
-                //cout << name << endl;
                 Additem(movies, name, indexValue-1);
                 break;
 			default: break;
@@ -275,9 +223,6 @@ int main()
         count++;
         
 	}
-    
-    //PrintItemsInIndex(5);
-    //PrintHashTable();
     string key = " ";
     while(key != "exit")
     {
@@ -288,10 +233,6 @@ int main()
             FindData(key);
         }
     }
-    
-    //hashFunction(movies, indexValue);
-	//display(movies, indexValue);
-    //cout <<  movies[5].name;
 }
 
 
