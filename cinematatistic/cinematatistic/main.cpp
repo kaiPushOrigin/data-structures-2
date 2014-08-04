@@ -1,7 +1,7 @@
 /*
- *  Assignment 2 Sample Solution
- *  Tami Meredith, July 2014
- *  Uses some heap code from course text book
+ *  Assignment 3 Sample Solution
+ *  Author - Kashif
+ *  GitHub Link - https://github.com/kashifkai28/data-structures-2/tree/Assignment-3/cinematatistic
  */
 #include <sstream>
 #include <string>
@@ -10,28 +10,24 @@
 #include <fstream>
 #include <cstdio>
 #include <cctype>
-#include <vector>
 
 using namespace std;
-
-static const int tableSize = 200;
 
 class movie {
 public:
 	string name, year, summary, director, stars;
-	string oscars, oscarNominations, baftaAwards, baftaNominations;
-	string goldenGlobes, goldenGlobeNominations, space;
+	string oscars, baftaAwards, goldenGlobes;
     int nameLength;
 };
 
 struct movieList {
     string name, year, summary, director, stars;
-	string oscars, oscarNominations, baftaAwards, baftaNominations;
-	string goldenGlobes, goldenGlobeNominations, space;
+	string oscars, baftaAwards, goldenGlobes;
     int nameLength;
     movieList* next;
 };
 
+static const int tableSize = 200;
 movieList* HashTable[tableSize];
 
 void CreateHashTable()
@@ -45,11 +41,8 @@ void CreateHashTable()
         HashTable[i]->director = "empty";
         HashTable[i]->stars = "empty";
         HashTable[i]->oscars = "empty";
-        HashTable[i]->oscarNominations = "empty";
         HashTable[i]->baftaAwards = "empty";
-        HashTable[i]->baftaNominations = "empty";
         HashTable[i]-> goldenGlobes = "empty";
-        HashTable[i]->goldenGlobeNominations = "empty";
         HashTable[i]->next = NULL;
     }
 }
@@ -63,15 +56,10 @@ int hashFunction(string key)
     for (int i = 0; i < key.length(); i++)
     {
         lowerCaseKey[i] = char(tolower(lowerCaseKey[i]));
-        
-    }
-    for(int i = 0; i < key.length(); i++)
-    {
         hash = hash + int(char(lowerCaseKey[i]));
     }
     location = hash % tableSize;
     return location;
-    
 }
 
 void Additem(movie movies[], string key, int indexValue)
@@ -85,15 +73,12 @@ void Additem(movie movies[], string key, int indexValue)
         HashTable[location]->director = movies[indexValue].director;
         HashTable[location]->stars = movies[indexValue].stars;
         HashTable[location]->oscars = movies[indexValue].oscars;
-        HashTable[location]->oscarNominations = movies[indexValue].oscarNominations;
         HashTable[location]->baftaAwards = movies[indexValue].baftaAwards;
-        HashTable[location]->baftaNominations = movies[indexValue].baftaNominations;
         HashTable[location]->goldenGlobes = movies[indexValue].goldenGlobes;
-        HashTable[location]->goldenGlobeNominations = movies[indexValue].goldenGlobeNominations;
     }
     else
     {
-        movieList* Ptr = HashTable[location];  //Link other items
+        movieList* Ptr = HashTable[location];  // Link other items - separate chaining
         movieList* n = new movieList;
         n->name = movies[indexValue].name;
         n->year = movies[indexValue].year;
@@ -101,15 +86,12 @@ void Additem(movie movies[], string key, int indexValue)
         n->director = movies[indexValue].director;
         n->stars = movies[indexValue].stars;
         n->oscars = movies[indexValue].oscars;
-        n->oscarNominations = movies[indexValue].oscarNominations;
         n->baftaAwards = movies[indexValue].baftaAwards;
-        n->baftaNominations = movies[indexValue].baftaNominations;
         n->goldenGlobes = movies[indexValue].goldenGlobes;
-        n->goldenGlobeNominations = movies[indexValue].goldenGlobeNominations;
         n->next = NULL;
         while (Ptr->next != NULL)   // the next element is not pointing to null
         {
-            Ptr = Ptr->next;        //make pointer advance down the list
+            Ptr = Ptr->next;        // make pointer advance down the list
         }
         Ptr->next = n;
     }
@@ -154,27 +136,28 @@ void FindData(string name)
         }
         Ptr = Ptr->next;
     }
-   if(foundName == true)
+    if(foundName == true)
     {
         cout << movName << endl;
-        cout << movYear << ";" << movOscars << " Oscar(s)" << movBafta << " BAFTA(s)"
-        << movGoldenGlobe << " Golden Globe(s)" << endl;
-        cout << movDirector << endl;
-        cout << movStars;
-        cout << movSummary << "\n\n";
-
+        cout << movYear << ";" << movOscars << flush << "Oscar(s),";
+        cout << movBafta << "BAFTA(s)," << movGoldenGlobe << "Golden Globe(s)" << endl;
+        cout << movDirector << movStars << movSummary << "\n\n";
     }
     else
     {
         cout << "That is a great movie, but it is not one of the top 100. \n\n";
     }
-    
 }
 
 string parseNumber(string value)
 {
-    std:: size_t pos = value.find(":");
-    string answer = value.substr(pos+1, 3);
+    size_t pos = value.find(":");
+    string answer = value.substr(pos+1);
+    for (int i = 0; i < answer.length(); i++)
+    {
+        if(answer.at(i) == '\r')   // if the name has a return character, convert it into a space character
+            answer.at(i) = ' ';
+    }
     return answer;
 }
 
@@ -184,56 +167,51 @@ int main()
     int indexValue = 0;
 	movie  movies[1100]; // 100 movies, each having 11 lines
 	int count = 0;
-    string name;
-	string line, token, input;
+    string name, line;   // name is the key
 	ifstream infile("movies.txt");
-
     while (getline(infile,line) )
 	{
 		switch (count)
 		{
 			case 0:
             {
-                std::size_t pos = line.find("(");
+                size_t pos = line.find("(");
                 string movieName = line.substr(0, pos-1);
                 string movieYear = line.substr(pos+1, 4);
                 movies[indexValue].name = movieName;
                 movies[indexValue].year = movieYear;
-                movies[indexValue].nameLength = movies[indexValue].name.length();
-                name = movies[indexValue].name;
+                name = movies[indexValue].name;  // name is the key
                 break;
             }
 			case 1: movies[indexValue].summary = line; break;
 			case 2: movies[indexValue].director = line; break;
 			case 3: movies[indexValue].stars = line; break;
 			case 4: movies[indexValue].oscars = parseNumber(line); break;
-			case 5: movies[indexValue].oscarNominations = line; break;
 			case 6: movies[indexValue].baftaAwards = parseNumber(line); break;
-			case 7: movies[indexValue].baftaNominations = line; break;
 			case 8: movies[indexValue].goldenGlobes = parseNumber(line); break;
-			case 9: movies[indexValue].goldenGlobeNominations = line; break;
 			case 10:
             {
-                movies[indexValue].space = line; count = -1; indexValue++;
-                Additem(movies, name, indexValue-1);
+                count = -1; indexValue++;
+                Additem(movies, name, indexValue-1);   // Add item into Hash Table
                 break;
-			default: break;
             }
+            default: break;
 	    }
         count++;
-        
 	}
     string key = " ";
-    while(key != "exit")
+    while(key != "the terminator")
     {
-        cout << "Search for ?";
-        getline(cin,key,'\n');
-        if(key != "exit")
+        cout << "What movie interests you? ";
+        getline(cin, key);
+        if(key != "the terminator")
         {
             FindData(key);
         }
+        else
+        {
+            cout << "Shutting down. Hasta la vista, baby." << endl;
+            return 0;
+        }
     }
 }
-
-
-
