@@ -3,13 +3,9 @@
  *  Author - Kashif
  *  GitHub Link - https://github.com/kashifkai28/data-structures-2/tree/Assignment-3/cinematatistic
  */
-#include <sstream>
 #include <string>
-#include <cstdlib>
 #include <iostream>
 #include <fstream>
-#include <cstdio>
-#include <cctype>
 
 using namespace std;
 
@@ -144,9 +140,7 @@ void FindData(string name)
         cout << movDirector << movStars << movSummary << "\n\n";
     }
     else
-    {
         cout << "That is a great movie, but it is not one of the top 100. \n\n";
-    }
 }
 
 string parseNumber(string value)
