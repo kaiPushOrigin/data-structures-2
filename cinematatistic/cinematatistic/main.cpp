@@ -19,7 +19,7 @@ public:
 struct movieList {
     string name, year, summary, director, stars;
 	string oscars, baftaAwards, goldenGlobes;
-    int nameLength;
+    int nameLength; string lowerCase;
     movieList* next;
 };
 
@@ -39,6 +39,7 @@ void CreateHashTable()
         HashTable[i]->oscars = "empty";
         HashTable[i]->baftaAwards = "empty";
         HashTable[i]-> goldenGlobes = "empty";
+        HashTable[i]-> lowerCase = "empty";
         HashTable[i]->next = NULL;
     }
 }
@@ -71,6 +72,12 @@ void Additem(movie movies[], string key, int indexValue)
         HashTable[location]->oscars = movies[indexValue].oscars;
         HashTable[location]->baftaAwards = movies[indexValue].baftaAwards;
         HashTable[location]->goldenGlobes = movies[indexValue].goldenGlobes;
+        HashTable[location]->lowerCase = movies[indexValue].name;
+        for (int i = 0; i < HashTable[location]->lowerCase.length(); i++)
+        {
+            HashTable[location]->lowerCase[i] = char(tolower(HashTable[location]->lowerCase[i]));
+        }
+        
     }
     else
     {
@@ -84,6 +91,11 @@ void Additem(movie movies[], string key, int indexValue)
         n->oscars = movies[indexValue].oscars;
         n->baftaAwards = movies[indexValue].baftaAwards;
         n->goldenGlobes = movies[indexValue].goldenGlobes;
+        n->lowerCase = movies[indexValue].name;
+        for (int i = 0; i < n->lowerCase.length(); i++)
+        {
+            n->lowerCase[i] = char(tolower(n->lowerCase[i]));
+        }
         n->next = NULL;
         while (Ptr->next != NULL)   // the next element is not pointing to null
         {
@@ -118,7 +130,7 @@ void FindData(string name)
     
     while(Ptr != NULL)
     {
-        if(Ptr->name == name || name == compareCase)
+        if(lowerName == Ptr->lowerCase)
         {
             foundName = true;
             movName = Ptr->name;
@@ -129,6 +141,7 @@ void FindData(string name)
             movBafta = Ptr->baftaAwards;
             movGoldenGlobe = Ptr->goldenGlobes;
             movYear = Ptr->year;
+            
         }
         Ptr = Ptr->next;
     }

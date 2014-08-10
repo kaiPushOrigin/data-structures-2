@@ -1,26 +1,67 @@
-//
-//  main.cpp
-//  Testing
-//
-//  Created by Kai on 2014-08-01.
-//  Copyright (c) 2014 data structures assignment. All rights reserved.
-//
+/*
+ * File:   main.cpp
+ * Author: kurt
+ *
+ * Created on April 22, 2013, 6:56 PM
+ */
 
+#include <cstdlib>
 #include <iostream>
-#include <string>
+#include <vector>
+#include <functional>
+using namespace std;
 
-int main ()
+#include "tree23.h"
+
+
+int main(int argc, char** argv)
 {
-    std::string str="Oscars: 3";
-    // (quoting Alfred N. Whitehead)
+    vector<int> v { 10, 20, 30, 40, 50 ,60, 70 , 80, 90, 37, 36, 35, 34 };
     
-    //std::string str2 = str.substr (12,12);   // "generalities"
+    int size = sizeof(v)/sizeof(int);
     
-    std::size_t pos = str.find(" ");      // position of "live" in str
+    Tree23<int> tree;
     
-    std::string str3 = str.substr (pos);     // get from "live" to the end
+    Tree23<int>::Node *inserted_node = nullptr;
     
-    std::cout  << ' ' << str3 << '\n';
+    /* Build this tree:
+     
+     (34,  40)
+     /    |    \
+     20    36    (60,80)
+     / \    / \   /  | \
+     10 30 35 37 50 70  90 */
     
+    for(auto iter = v.begin(); iter != v.end(); ++iter) {
+        
+        inserted_node = tree.insert(*iter);
+    }
+    
+    /* lambda code fails to compile, be sure -std=c++11 is being used, or
+     * use
+     *  void print_int(int x) { cout << x << ' '; }
+     *  //...snip
+     *  tree.traverse(print_int);
+     * instead.
+     */
+    tree.Traverse([](int x){ cout << x << ' '; });
+    
+    tree.remove(10);
+    /* Leaves this tree:
+     
+     (36,     60)
+     /      |    \
+     34      40    80
+     / \      / \   / \
+     (20,30) 35    37 50 70  90 */
+    
+    
+    tree.remove(36);
+    
+    tree.Traverse([](int x){ cout << x << ' '; }); // This blows up because we do not have a proper tree.
+    
+    cout << "------------" << endl;
+    cout << endl;
     return 0;
+    
 }
