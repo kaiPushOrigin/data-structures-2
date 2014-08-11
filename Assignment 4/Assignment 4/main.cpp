@@ -85,7 +85,7 @@ bool InsertRec(TwoThreeTree *pNode, Babies &baby, TwoThreeTree **ppN1,TwoThreeTr
                 pNode->pChild3 = pNode->pChild2;
                 pNode->pChild2 = pN2;
                 pNode->pChild1 = pN1;
-                cout << pN2->RefLo.name;
+               // cout << pN2->RefLo.name;
                 
                 return false;
             }
@@ -299,7 +299,7 @@ bool InsertRec(TwoThreeTree *pNode, Babies &baby, TwoThreeTree **ppN1,TwoThreeTr
 }
 
 
-TwoThreeTree *Insert(Babies baby, TwoThreeTree *Tree, TwoThreeTree *copyTree)
+TwoThreeTree *Insert(Babies baby, TwoThreeTree *Tree)
 {
     
         // In the normal case, the tree is not empty.
@@ -379,25 +379,25 @@ void* LookUp(const string key, TwoThreeTree* Tree)
 	return pScan;
 }
 
-//void inorder(TwoThreeTree *copyTree)
-//{
-  //  if((copyTree->pChild1 == NULL) && (copyTree->pChild2 == NULL) && (copyTree->pChild3 == NULL))
-   //     cout << copyTree->RefLo.name << endl;
-    //else if((copyTree->RefLo.name != "") && (copyTree->RefHi.name != ""))
-    //{
-      //  inorder(copyTree->pChild1);
-        //cout << copyTree->RefLo.name << endl;
-        //inorder(copyTree->pChild2);
-        //cout << copyTree->RefHi.name;
-        //inorder(copyTree->pChild3);
-    //}
-    //else
-    //{
-      //  inorder(copyTree->pChild1);
-       // cout << copyTree->RefLo.name << endl;
-    //}
-    
-//}
+void inorder(TwoThreeTree *copyTree)
+{
+  if((copyTree->pChild1 == NULL) && (copyTree->pChild2 == NULL) && (copyTree->pChild3 == NULL))
+     cout << copyTree->RefLo.name << endl;
+else if((copyTree->RefLo.name != "") && (copyTree->RefHi.name != ""))
+{
+  inorder(copyTree->pChild1);
+cout << copyTree->RefLo.name << endl;
+inorder(copyTree->pChild2);
+    cout << copyTree->RefHi.name << endl;
+inorder(copyTree->pChild3);
+}
+else
+{
+  inorder(copyTree->pChild1);
+ cout << copyTree->RefLo.name << endl;
+}
+
+}
 
 
 
@@ -429,7 +429,7 @@ int main (int argc, char** argv)
                 {
                     cout << "Null" << endl;
                 }
-                Tree = Insert(baby, Tree, copyTree);
+                Tree = Insert(baby, Tree);
                 femaleBabiesIndex++; count++;
                 break;
                 
@@ -441,11 +441,9 @@ int main (int argc, char** argv)
             }
 	    }
 	}
-   // copyTree = Tree;
-   // inorder(copyTree);
-   // string key;
-    cout << Tree->pChild3->RefLo.name;
-
+    //cout << Tree->RefHi.name;
+    string key;
+    inorder(Tree);
     
    // cout << "Search: ";
    // cin >> key;
