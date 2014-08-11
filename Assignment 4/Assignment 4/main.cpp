@@ -49,11 +49,14 @@ bool InsertRec(TwoThreeTree *pNode, Babies &baby, TwoThreeTree **ppN1,TwoThreeTr
     // This is an internal node.  We need to start off by recursing down
     // to the appropriate child.  If the recursion caused a split, we
     // need to finish the split logic here.
-    if (NULL != pNode->pChild1) {
+    if (NULL != pNode->pChild1)
+    {
         
         // Recurse down the first child.
-        if (baby.name < pNode->RefLo.name) {
-            if (false == InsertRec(pNode->pChild1, baby, &pN1, &pN2)) {
+        if (baby.name < pNode->RefLo.name)
+        {
+            if (false == InsertRec(pNode->pChild1, baby, &pN1, &pN2))
+            {
                 return false;
             }
             
@@ -73,12 +76,16 @@ bool InsertRec(TwoThreeTree *pNode, Babies &baby, TwoThreeTree **ppN1,TwoThreeTr
             // In this case, the splitting is now contained, so we return
             // false.
             //
-            if (NULL == pNode->RefHi.pContext) {
+            if (NULL == pNode->RefHi.pContext)
+            {
                 pNode->RefHi   = pNode->RefLo;
                 pNode->RefLo   = baby;
+                //cout << pNode->RefLo.name;
+                //cout << pNode->pChild2->RefLo.name;
                 pNode->pChild3 = pNode->pChild2;
                 pNode->pChild2 = pN2;
                 pNode->pChild1 = pN1;
+                cout << pN2->RefLo.name;
                 
                 return false;
             }
@@ -168,21 +175,26 @@ bool InsertRec(TwoThreeTree *pNode, Babies &baby, TwoThreeTree **ppN1,TwoThreeTr
     // Recursive base case:  This is where we hit a leaf node.  Unless
     // the key is found in this node, we will try to insert the new
     // key in this node, possibly causing a split.
-    else {
+    else
+    {
         // This leaf only contains one key.  No split is required, we just
         // need to insert the new key into the correct place (or replace
         // an existing value).
-        if (NULL == pNode->RefHi.pContext) {
+        if (NULL == pNode->RefHi.pContext)
+        {
             
             // If the new key is bigger than the one key in this node,
             // it becomes the second key.
-            if (baby.name > pNode->RefLo.name) {
+            if (baby.name > pNode->RefLo.name)
+            {
                 pNode->RefHi = baby;
+                //cout << pNode->RefHi.name;
             }
             
             // Otherwise we need to shift the existing key over to be
             // the second key, then drop the new key in as the first key.
-            else if (baby.name < pNode->RefLo.name) {
+            else if (baby.name < pNode->RefLo.name)
+            {
                 pNode->RefHi = pNode->RefLo;
                 pNode->RefLo = baby;
             }
@@ -190,7 +202,8 @@ bool InsertRec(TwoThreeTree *pNode, Babies &baby, TwoThreeTree **ppN1,TwoThreeTr
             // Otherwise we're replacing an existing key with a new value.
             // This does not insert a new value, it only replaces the
             // existing value.
-            else {
+            else
+            {
                 pNode->RefLo = baby;
             }
             
@@ -207,31 +220,40 @@ bool InsertRec(TwoThreeTree *pNode, Babies &baby, TwoThreeTree **ppN1,TwoThreeTr
         // key already present.  Here we just need to replace the old key,
         // under the assumption that its value has been updated.
         
-        if (baby.name < pNode->RefLo.name) {
+        if (baby.name < pNode->RefLo.name)
+        {
             key[0] = baby;
             key[1] = pNode->RefLo;
             key[2] = pNode->RefHi;
+            // for(int i = 0; i < 3; i++)
+              // cout << key[i].name << endl;
         }
         
         // Special case: replace an existing value.
-        else if (baby.name == pNode->RefLo.name) {
+        else if (baby.name == pNode->RefLo.name)
+        {
             pNode->RefLo = baby;
             return false;
         }
         
-        else if (baby.name < pNode->RefHi.name) {
+        else if (baby.name < pNode->RefHi.name)
+        {
             key[0] = pNode->RefLo;
             key[1] = baby;
             key[2] = pNode->RefHi;
+           // for(int i = 0; i < 3; i++)
+             //   cout << key[i].name << endl;
         }
         
         // Special case: replace an existing value.
-        else if (baby.name == pNode->RefHi.name) {
+        else if (baby.name == pNode->RefHi.name)
+        {
             pNode->RefHi = baby;
             return false;
         }
         
-        else {
+        else
+        {
             key[0] = pNode->RefLo;
             key[1] = pNode->RefHi;
             key[2] = baby;
@@ -252,7 +274,7 @@ bool InsertRec(TwoThreeTree *pNode, Babies &baby, TwoThreeTree **ppN1,TwoThreeTr
     // Destructively replace the contents of pNode to contain the first
     // two child nodes.
     pNode->RefLo          = key[0];
-    pNode->RefHi.name      = " ";
+    pNode->RefHi.name     = "";
     pNode->RefHi.pContext = NULL;
     pNode->pChild1        = pC[0];
     pNode->pChild2        = pC[1];
@@ -260,18 +282,8 @@ bool InsertRec(TwoThreeTree *pNode, Babies &baby, TwoThreeTree **ppN1,TwoThreeTr
     
     // Create a new node to contain the last two child pointers.
    
-    // pNew = NewNode();
-    pNew = new TwoThreeTree;
     
-    //pNew->RefLo.name      = " ";
-    //pNew->RefLo.pContext = NULL;
-    //pNew->RefHi.name      = " ";
-    //pNew->RefHi.pContext = NULL;
-    //pNew->pChild1        = NULL;
-    //pNew->pChild2        = NULL;
-    //pNew->pChild3        = NULL;
-    
-    
+    pNew = new TwoThreeTree();
     pNew->RefLo           = key[2];
     pNew->pChild1         = pC[2];
     pNew->pChild2         = pC[3];
@@ -310,8 +322,7 @@ TwoThreeTree *Insert(Babies baby, TwoThreeTree *Tree, TwoThreeTree *copyTree)
             //
             if (InsertRec(Tree, baby, &pN1, &pN2))
             {
-                // m_pRoot = NewNode();
-                Tree = new TwoThreeTree;
+                Tree = new TwoThreeTree();
                 Tree->RefLo   = baby;
                 Tree->pChild1 = pN1;
                 Tree->pChild2 = pN2;
@@ -319,15 +330,74 @@ TwoThreeTree *Insert(Babies baby, TwoThreeTree *Tree, TwoThreeTree *copyTree)
         }
         
         // Special case for inserting into an empty tree.
-        else if(Tree == NULL)
+        else
         {
-            Tree = new TwoThreeTree;
+            Tree = new TwoThreeTree();
             Tree->RefLo  = baby;
             
-            cout << Tree->RefLo.name << endl;
+            //cout << Tree->RefLo.name << endl;
         }
     return (Tree);
 }
+
+
+void* LookUp(const string key, TwoThreeTree* Tree)
+{
+	if (NULL == Tree)
+    {
+		return NULL;
+	}
+    
+	TwoThreeTree *pScan = Tree;
+    
+	while (NULL != pScan) {
+		if (key < pScan->RefLo.name) {
+			pScan = pScan->pChild1;
+		}
+		else if (key == pScan->RefLo.name) {
+			return pScan->RefLo.pContext;
+		}
+        
+		// If this is a 2-node, iterate down to the second child.
+		else if (NULL == pScan->RefHi.pContext) {
+			pScan = pScan->pChild2;
+		}
+        
+		// Otherwise we need to compare against the higher key to
+		// determine whether we traverse the second or third child.
+		else if (key < pScan->RefHi.name) {
+			pScan = pScan->pChild2;
+		}
+		else if (key > pScan->RefHi.name) {
+			pScan = pScan->pChild3;
+		}
+		else {
+			return pScan->RefHi.pContext;
+		}
+	}
+    
+	return pScan;
+}
+
+//void inorder(TwoThreeTree *copyTree)
+//{
+  //  if((copyTree->pChild1 == NULL) && (copyTree->pChild2 == NULL) && (copyTree->pChild3 == NULL))
+   //     cout << copyTree->RefLo.name << endl;
+    //else if((copyTree->RefLo.name != "") && (copyTree->RefHi.name != ""))
+    //{
+      //  inorder(copyTree->pChild1);
+        //cout << copyTree->RefLo.name << endl;
+        //inorder(copyTree->pChild2);
+        //cout << copyTree->RefHi.name;
+        //inorder(copyTree->pChild3);
+    //}
+    //else
+    //{
+      //  inorder(copyTree->pChild1);
+       // cout << copyTree->RefLo.name << endl;
+    //}
+    
+//}
 
 
 
@@ -371,7 +441,16 @@ int main (int argc, char** argv)
             }
 	    }
 	}
-    string key;
+   // copyTree = Tree;
+   // inorder(copyTree);
+   // string key;
+    cout << Tree->pChild3->RefLo.name;
+
+    
+   // cout << "Search: ";
+   // cin >> key;
+   // LookUp(key, Tree);
+  // cout << Tree->RefLo.name;
 
 	
 }
