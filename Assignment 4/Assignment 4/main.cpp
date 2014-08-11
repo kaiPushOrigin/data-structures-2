@@ -24,7 +24,7 @@ struct TwoThreeTree
     TwoThreeTree *pChild1;
     TwoThreeTree *pChild2;
     TwoThreeTree *pChild3;
-   // void NewNode();
+    // void NewNode();
     
     Babies RefLo;
     Babies RefHi;
@@ -85,7 +85,7 @@ bool InsertRec(TwoThreeTree *pNode, Babies &baby, TwoThreeTree **ppN1,TwoThreeTr
                 pNode->pChild3 = pNode->pChild2;
                 pNode->pChild2 = pN2;
                 pNode->pChild1 = pN1;
-               // cout << pN2->RefLo.name;
+                // cout << pN2->RefLo.name;
                 
                 return false;
             }
@@ -226,7 +226,7 @@ bool InsertRec(TwoThreeTree *pNode, Babies &baby, TwoThreeTree **ppN1,TwoThreeTr
             key[1] = pNode->RefLo;
             key[2] = pNode->RefHi;
             // for(int i = 0; i < 3; i++)
-              // cout << key[i].name << endl;
+            // cout << key[i].name << endl;
         }
         
         // Special case: replace an existing value.
@@ -241,8 +241,8 @@ bool InsertRec(TwoThreeTree *pNode, Babies &baby, TwoThreeTree **ppN1,TwoThreeTr
             key[0] = pNode->RefLo;
             key[1] = baby;
             key[2] = pNode->RefHi;
-           // for(int i = 0; i < 3; i++)
-             //   cout << key[i].name << endl;
+            // for(int i = 0; i < 3; i++)
+            //   cout << key[i].name << endl;
         }
         
         // Special case: replace an existing value.
@@ -281,7 +281,7 @@ bool InsertRec(TwoThreeTree *pNode, Babies &baby, TwoThreeTree **ppN1,TwoThreeTr
     pNode->pChild3        = NULL;
     
     // Create a new node to contain the last two child pointers.
-   
+    
     
     pNew = new TwoThreeTree();
     pNew->RefLo           = key[2];
@@ -302,41 +302,41 @@ bool InsertRec(TwoThreeTree *pNode, Babies &baby, TwoThreeTree **ppN1,TwoThreeTr
 TwoThreeTree *Insert(Babies baby, TwoThreeTree *Tree)
 {
     
-        // In the normal case, the tree is not empty.
-        if (Tree != NULL)
-        {
-            TwoThreeTree *pN1  = NULL;
-            TwoThreeTree *pN2  = NULL;
-            
-            // If the recursive operation returns true, we need to split the
-            // root of the tree.  The existing root node has already been
-            // changed to maintain sorting order (the current root pointer is
-            // returned in pN1), and a new node is returned in pN2.  Since
-            // all conditioning was done by the recursive routine, all we
-            // need to do is create a new root node and make the two pointers
-            // the children of the new root node.
-            //
-            // Also note that ref is pass-by-reference, so upon exiting the
-            // recursive function, ref will now contain the correct key for
-            // the new root node.
-            //
-            if (InsertRec(Tree, baby, &pN1, &pN2))
-            {
-                Tree = new TwoThreeTree();
-                Tree->RefLo   = baby;
-                Tree->pChild1 = pN1;
-                Tree->pChild2 = pN2;
-            }
-        }
+    // In the normal case, the tree is not empty.
+    if (Tree != NULL)
+    {
+        TwoThreeTree *pN1  = NULL;
+        TwoThreeTree *pN2  = NULL;
         
-        // Special case for inserting into an empty tree.
-        else
+        // If the recursive operation returns true, we need to split the
+        // root of the tree.  The existing root node has already been
+        // changed to maintain sorting order (the current root pointer is
+        // returned in pN1), and a new node is returned in pN2.  Since
+        // all conditioning was done by the recursive routine, all we
+        // need to do is create a new root node and make the two pointers
+        // the children of the new root node.
+        //
+        // Also note that ref is pass-by-reference, so upon exiting the
+        // recursive function, ref will now contain the correct key for
+        // the new root node.
+        //
+        if (InsertRec(Tree, baby, &pN1, &pN2))
         {
             Tree = new TwoThreeTree();
-            Tree->RefLo  = baby;
-            
-            //cout << Tree->RefLo.name << endl;
+            Tree->RefLo   = baby;
+            Tree->pChild1 = pN1;
+            Tree->pChild2 = pN2;
         }
+    }
+    
+    // Special case for inserting into an empty tree.
+    else
+    {
+        Tree = new TwoThreeTree();
+        Tree->RefLo  = baby;
+        
+        //cout << Tree->RefLo.name << endl;
+    }
     return (Tree);
 }
 
@@ -381,22 +381,25 @@ void* LookUp(const string key, TwoThreeTree* Tree)
 
 void inorder(TwoThreeTree *copyTree)
 {
-  if((copyTree->pChild1 == NULL) && (copyTree->pChild2 == NULL) && (copyTree->pChild3 == NULL))
-     cout << copyTree->RefLo.name << endl;
-else if((copyTree->RefLo.name != "") && (copyTree->RefHi.name != ""))
-{
-  inorder(copyTree->pChild1);
-cout << copyTree->RefLo.name << endl;
-inorder(copyTree->pChild2);
-    cout << copyTree->RefHi.name << endl;
-inorder(copyTree->pChild3);
-}
-else
-{
-  inorder(copyTree->pChild1);
- cout << copyTree->RefLo.name << endl;
-}
-
+    if((copyTree->pChild1 == NULL) && (copyTree->pChild2 == NULL) && (copyTree->pChild3 == NULL))
+        cout << copyTree->RefLo.name << " " << copyTree->RefLo.uses << " " << copyTree->RefLo.rank << endl;
+    
+    
+    else if((copyTree->RefLo.name != "") && (copyTree->RefHi.name != ""))
+    {
+        inorder(copyTree->pChild1);
+        cout << copyTree->RefLo.name << " " << copyTree->RefLo.uses << " " << copyTree->RefLo.rank << endl;
+        inorder(copyTree->pChild2);
+        cout << copyTree->RefHi.name << " " << copyTree->RefHi.uses << " " << copyTree->RefHi.rank << endl;
+        inorder(copyTree->pChild3);
+    }
+    else
+    {
+        inorder(copyTree->pChild1);
+        cout << copyTree->RefLo.name << " " << copyTree->RefLo.uses << " " << copyTree->RefLo.rank << endl;
+        inorder(copyTree->pChild2);
+    }
+    
 }
 
 
@@ -407,7 +410,7 @@ int main (int argc, char** argv)
 	ifstream infile("babies.txt");
     TwoThreeTree *Tree, *copyTree;
     Tree = NULL;
-
+    
 	string line, token, input;
 	string rank, name, uses;
 	int count = 1;
@@ -445,10 +448,10 @@ int main (int argc, char** argv)
     string key;
     inorder(Tree);
     
-   // cout << "Search: ";
-   // cin >> key;
-   // LookUp(key, Tree);
-  // cout << Tree->RefLo.name;
-
+    // cout << "Search: ";
+    // cin >> key;
+    // LookUp(key, Tree);
+    // cout << Tree->RefLo.name;
+    
 	
 }
