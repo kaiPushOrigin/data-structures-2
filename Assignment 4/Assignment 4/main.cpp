@@ -30,21 +30,6 @@ struct TwoThreeTree
     Babies RefHi;
 };
 
-//TwoThreeTree* NewNode()
-//{
-   // TwoThreeTree pNew;
-    
-	//pNew.RefLo.name      = " ";
-	//pNew.RefLo.pContext = NULL;
-	//pNew.RefHi.name      = 0;
-	//pNew->RefHi.pContext = NULL;
-	//pNew->pChild1        = NULL;
-	//pNew->pChild2        = NULL;
-	//pNew->pChild3        = NULL;
-    
-//	return pNew;
-//}
-
 
 
 bool InsertRec(TwoThreeTree *pNode, Babies &baby, TwoThreeTree **ppN1,TwoThreeTree **ppN2)
@@ -276,13 +261,15 @@ bool InsertRec(TwoThreeTree *pNode, Babies &baby, TwoThreeTree **ppN1,TwoThreeTr
     // Create a new node to contain the last two child pointers.
    
     // pNew = NewNode();
-    pNew->RefLo.name      = " ";
-    pNew->RefLo.pContext = NULL;
-    pNew->RefHi.name      = " ";
-    pNew->RefHi.pContext = NULL;
-    pNew->pChild1        = NULL;
-    pNew->pChild2        = NULL;
-    pNew->pChild3        = NULL;
+    pNew = new TwoThreeTree;
+    
+    //pNew->RefLo.name      = " ";
+    //pNew->RefLo.pContext = NULL;
+    //pNew->RefHi.name      = " ";
+    //pNew->RefHi.pContext = NULL;
+    //pNew->pChild1        = NULL;
+    //pNew->pChild2        = NULL;
+    //pNew->pChild3        = NULL;
     
     
     pNew->RefLo           = key[2];
@@ -300,11 +287,12 @@ bool InsertRec(TwoThreeTree *pNode, Babies &baby, TwoThreeTree **ppN1,TwoThreeTr
 }
 
 
-void Insert(Babies baby, TwoThreeTree *Tree)
+TwoThreeTree *Insert(Babies baby, TwoThreeTree *Tree, TwoThreeTree *copyTree)
 {
-    {
+    
         // In the normal case, the tree is not empty.
-        if (Tree != NULL) {
+        if (Tree != NULL)
+        {
             TwoThreeTree *pN1  = NULL;
             TwoThreeTree *pN2  = NULL;
             
@@ -320,19 +308,10 @@ void Insert(Babies baby, TwoThreeTree *Tree)
             // recursive function, ref will now contain the correct key for
             // the new root node.
             //
-            if (InsertRec(Tree, baby, &pN1, &pN2)) {
+            if (InsertRec(Tree, baby, &pN1, &pN2))
+            {
                 // m_pRoot = NewNode();
-                Tree->RefLo.name      = " ";
-                Tree->RefLo.pContext = NULL;
-                Tree->RefHi.name      = " ";
-                Tree->RefHi.pContext = NULL;
-                Tree->pChild1        = NULL;
-                Tree->pChild2        = NULL;
-                Tree->pChild3        = NULL;
-                
-                
-                
-                
+                Tree = new TwoThreeTree;
                 Tree->RefLo   = baby;
                 Tree->pChild1 = pN1;
                 Tree->pChild2 = pN2;
@@ -340,89 +319,59 @@ void Insert(Babies baby, TwoThreeTree *Tree)
         }
         
         // Special case for inserting into an empty tree.
-        else {
-            
-            //Tree = NewNode();
-            Tree->RefLo.name      = " ";
-            Tree->RefLo.pContext = NULL;
-            Tree->RefHi.name      = " ";
-            Tree->RefHi.pContext = NULL;
-            Tree->pChild1        = NULL;
-            Tree->pChild2        = NULL;
-            Tree->pChild3        = NULL;
-            
-            
+        else if(Tree == NULL)
+        {
+            Tree = new TwoThreeTree;
             Tree->RefLo  = baby;
+            
+            cout << Tree->RefLo.name << endl;
         }
-    }
+    return (Tree);
 }
 
 
 
 int main (int argc, char** argv)
 {
-    
-    
-    
-    
-    Babies baby[1000];
+    Babies baby;
 	ifstream infile("babies.txt");
-	int nf = 0, // Number of Fields
-    nl = 0, // Number of Lines
-    nr = 0; // Number of Records
-    
-	TwoThreeTree *Tree;
+    TwoThreeTree *Tree, *copyTree;
     Tree = NULL;
-    
+
 	string line, token, input;
 	string rank, name, uses;
 	int count = 1;
 	int femaleBabiesIndex = 0;
 	while (getline(infile, line))
 	{
-     //   data = new node();  Add to the code above
+        copyTree = new TwoThreeTree();
 		switch(count)
 		{
 			case 1:
             {
                 size_t pos = line.find(" ");
-                baby[femaleBabiesIndex].rank = line.substr(0, pos);      // Value before first whitespace
-                name = line.substr(pos+1);                                  // name = whole sentence after first whitespace
+                baby.rank = line.substr(0, pos);      // Value before first whitespace
+                name = line.substr(pos+1);                           // name = whole sentence after first whitespace
                 size_t posn = name.find(" ");                               // i.e second white space
-                baby[femaleBabiesIndex].name = name.substr(0, posn);
-                baby[femaleBabiesIndex].uses = name.substr(posn+1);
-
-                
+                baby.name = name.substr(0, posn);
+                baby.uses = name.substr(posn+1);
+                if(Tree == NULL)
+                {
+                    cout << "Null" << endl;
+                }
+                Tree = Insert(baby, Tree, copyTree);
                 femaleBabiesIndex++; count++;
                 break;
+                
             }
 		    case 2:
             {
-               // size_t pos = line.find(" ");
-                //mBabies[maleBabiesIndex].rank = line.substr(0, pos);      // Value before first whitespace
-                //name = line.substr(pos+1);                                // name = whole sentence after first whitespace
-                //size_t posn = name.find(" ");                             // i.e second white space
-                //mBabies[maleBabiesIndex].name = name.substr(0, posn);
-                //mBabies[maleBabiesIndex].uses = name.substr(posn+1);
-                
-               // data->name = mBabies[maleBabiesIndex].name;
-                //data->rank = mBabies[maleBabiesIndex].rank;
-                //data->uses = mBabies[maleBabiesIndex].uses;
-                
-               // maleBabiesIndex++;
                 count = 1;
                 break;
             }
 	    }
-        Insert(baby, Tree);
-
 	}
-    cout << baby[998].name << " " << baby[998].rank << " " << baby[998].uses;
-    cout << femaleBabiesIndex;
-    
-    for (int i = 0; i <femaleBabiesIndex; i++)
-    {
-       cout << baby[i].name << " " << baby[i].rank << " " << baby[i].uses << endl;
-    }
+    string key;
+
 	
 }
