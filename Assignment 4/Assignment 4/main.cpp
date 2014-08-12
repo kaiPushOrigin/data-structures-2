@@ -239,29 +239,38 @@ void inorder(TwoThreeTree *copyTree)
     }
 }
 
-TwoThreeTree* findItem(TwoThreeTree* Tree, string key)
+void findItem(TwoThreeTree* Tree, string key)
 {
-    if(key == Tree->smallItem.name)
-        return Tree;
+    if(key == Tree->smallItem.name || key == Tree->largeItem.name)
+    {
+        if(key==Tree->smallItem.name)
+            cout << Tree->smallItem.name << " is the " << Tree->smallItem.rank << "th name (" << Tree->smallItem.uses
+            << " uses in 2013)";
+        else
+            cout << Tree->largeItem.name << " is the " << Tree->largeItem.rank << "th name (" << Tree->largeItem.uses
+            << " uses in 2013)";
+            
+    }
     
     else if((Tree->leftChildPtr == NULL) && (Tree->midChildPtr == NULL) && (Tree->rightChildPtr == NULL))
-        return NULL;
+        cout << "NULL";
+    
     
     else if((Tree->smallItem.name != "") && (Tree->largeItem.name != ""))
     {
         if(key < Tree->smallItem.name)
-            return findItem(Tree->leftChildPtr, key);
-        else if(key < Tree->smallItem.name)
-            return findItem(Tree->midChildPtr, key);
+             findItem(Tree->leftChildPtr, key);
+        else if(key < Tree->largeItem.name)
+             findItem(Tree->midChildPtr, key);
         else
-            return findItem(Tree->rightChildPtr, key);
+             findItem(Tree->rightChildPtr, key);
     }
     else
     {
         if(key < Tree->smallItem.name)
-            return findItem(Tree->leftChildPtr, key);
+             findItem(Tree->leftChildPtr, key);
         else
-            return findItem(Tree->midChildPtr, key);
+             findItem(Tree->midChildPtr, key);
     }
 }
 
@@ -321,16 +330,8 @@ int main (int argc, char** argv)
         cout << "Thank you for using popularity";
         break;
     }
-    copyTree = findItem(Tree, key);
-    if (copyTree == NULL)
-    {
-        cout << key << " was not in the top 100 male or female names" << endl;
-    }
-    else
-    {
-        cout << copyTree->smallItem.name << " is the " << copyTree->smallItem.rank << "th name (" << copyTree->smallItem.uses
-        << " uses in 2013)";
-    }
+    findItem(Tree, key);
+
     }while(true);
 	
 }
