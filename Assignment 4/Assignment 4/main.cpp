@@ -220,21 +220,21 @@ TwoThreeTree *Insert(Babies baby, TwoThreeTree *Tree)
 void inorder(TwoThreeTree *copyTree)
 {
     if((copyTree->leftChildPtr == NULL) && (copyTree->midChildPtr == NULL) && (copyTree->rightChildPtr == NULL))
-        cout << copyTree->smallItem.name << " " << copyTree->smallItem.uses << " " << copyTree->smallItem.rank << endl;
+        cout << copyTree->smallItem.name << endl;// << " " << copyTree->smallItem.uses << " " << copyTree->smallItem.rank << endl;
     
     else if((copyTree->smallItem.name != "") && (copyTree->largeItem.name != ""))
     {
         inorder(copyTree->leftChildPtr);
-        cout << copyTree->smallItem.name << " " << copyTree->smallItem.uses << " " << copyTree->smallItem.rank << endl;
+        cout << copyTree->smallItem.name << endl;//<< " " << copyTree->smallItem.uses << " " << copyTree->smallItem.rank << endl;
         inorder(copyTree->midChildPtr);
-        cout << copyTree->largeItem.name << " " << copyTree->largeItem.uses << " " << copyTree->largeItem.rank << endl;
+        cout << copyTree->largeItem.name << endl;//<< " " << copyTree->largeItem.uses << " " << copyTree->largeItem.rank << endl;
         inorder(copyTree->rightChildPtr);
     }
     
     else
     {
         inorder(copyTree->leftChildPtr);
-        cout << copyTree->smallItem.name << " " << copyTree->smallItem.uses << " " << copyTree->smallItem.rank << endl;
+        cout << copyTree->smallItem.name << endl;//<< " " << copyTree->smallItem.uses << " " << copyTree->smallItem.rank << endl;
         inorder(copyTree->midChildPtr);
     }
 }
@@ -310,11 +310,11 @@ int main (int argc, char** argv)
 	}
     cout << "Initializing from babies.txt: " << BabiesIndex << "lines/records" << endl;
     string key = "";
-    //inorder(Tree);
+    inorder(Tree);
     
     do
     {
-    cout << "\nPlease enter a name of interest: ";
+    cout << "\n\nPlease enter a name of interest: ";
     cin >> key;
     if(key == "QUIT")
     {
