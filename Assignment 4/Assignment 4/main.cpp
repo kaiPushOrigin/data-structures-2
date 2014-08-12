@@ -402,6 +402,42 @@ void inorder(TwoThreeTree *copyTree)
     
 }
 
+TwoThreeTree* findItem(TwoThreeTree* Tree, string key)
+{
+    if(key == Tree->RefLo.name)
+        return Tree;
+    
+    else if((Tree->pChild1 == NULL) && (Tree->pChild2 == NULL) && (Tree->pChild3 == NULL))
+    {
+        return NULL;
+    }
+    else if((Tree->RefLo.name != "") && (Tree->RefHi.name != ""))
+    {
+        if(key < Tree->RefLo.name)
+        {
+            return findItem(Tree->pChild1, key);
+        }
+        else if(key < Tree->RefLo.name)
+        {
+            return findItem(Tree->pChild2, key);
+        }
+        else
+        {
+            return findItem(Tree->pChild3, key);
+        }
+    }
+    else
+    {
+        if(key < Tree->RefLo.name)
+        {
+            return findItem(Tree->pChild1, key);
+        }
+        else
+        {
+            return findItem(Tree->pChild2, key);
+        }
+    }
+}
 
 
 int main (int argc, char** argv)
@@ -447,6 +483,19 @@ int main (int argc, char** argv)
     //cout << Tree->RefHi.name;
     string key;
     inorder(Tree);
+    
+    cout << "\n\n Search: ";
+    cin >> key;
+    
+    copyTree = findItem(Tree, key);
+    if (copyTree == NULL)
+    {
+        cout << "No data found for " << key << "\n\n";
+    }
+    else
+    {
+        cout << copyTree->RefLo.name << " " << copyTree->RefLo.uses;
+    }
     
     // cout << "Search: ";
     // cin >> key;
