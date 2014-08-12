@@ -14,7 +14,7 @@ using namespace std;
 struct Babies
 {
 public:
-	string name, rank, uses;
+	string name, rank, uses, gender, abbreviation;
     void* pContext;
 };
 
@@ -146,7 +146,6 @@ bool InsertRec(TwoThreeTree *parentNode, Babies &baby, TwoThreeTree **ppN1,TwoTh
         else if (baby.name == parentNode->smallItem.name)   // Special case: replace an existing value.
         {
             parentNode->smallItem = baby;
-            cout << "small item " << parentNode->smallItem.name << endl;
             return false;
         }
         else if (baby.name < parentNode->largeItem.name)
@@ -158,8 +157,6 @@ bool InsertRec(TwoThreeTree *parentNode, Babies &baby, TwoThreeTree **ppN1,TwoTh
         else if (baby.name == parentNode->largeItem.name)  // Special case: replace an existing value.
         {
             parentNode->largeItem = baby;
-            cout << "large item " << parentNode->largeItem.name << endl;
-
             return false;
         }
         else
@@ -244,16 +241,18 @@ void findItem(TwoThreeTree* Tree, string key)
     if(key == Tree->smallItem.name || key == Tree->largeItem.name)
     {
         if(key==Tree->smallItem.name)
-            cout << Tree->smallItem.name << " is the " << Tree->smallItem.rank << "th name (" << Tree->smallItem.uses
+            cout << Tree->smallItem.name << " is the " << Tree->smallItem.rank << Tree->smallItem.abbreviation
+            << " " << Tree->smallItem.gender << " name (" << Tree->smallItem.uses
             << " uses in 2013)";
         else
-            cout << Tree->largeItem.name << " is the " << Tree->largeItem.rank << "th name (" << Tree->largeItem.uses
+            cout << Tree->largeItem.name << " is the " << Tree->largeItem.rank  << Tree->largeItem.abbreviation
+            << " " << Tree->largeItem.gender << "name (" << Tree->largeItem.uses
             << " uses in 2013)";
             
     }
     
     else if((Tree->leftChildPtr == NULL) && (Tree->midChildPtr == NULL) && (Tree->rightChildPtr == NULL))
-        cout << "NULL";
+        cout << key << " was not in the top male or female names" << endl;
     
     
     else if((Tree->smallItem.name != "") && (Tree->largeItem.name != ""))
@@ -287,35 +286,30 @@ int main (int argc, char** argv)
 	while (getline(infile, line))
 	{
         copyTree = new TwoThreeTree();
-		switch(count)
-		{
-			case 1:
-            {
                 size_t pos = line.find(" ");
                 baby.rank = line.substr(0, pos);      // Value before first whitespace
+                if(baby.rank[pos-2] == 1)
+                    baby.abbreviation = "st";
+                else if(baby.rank[pos-2] == 2)
+                    baby.abbreviation = "nd";
+                else if(baby.rank[pos-2] == 3)
+                    baby.abbreviation = "rd";
+                else
+                    baby.abbreviation = "th";
+        
                 name = line.substr(pos+1);                           // name = whole sentence after first whitespace
                 size_t posn = name.find(" ");                               // i.e second white space
                 baby.name = name.substr(0, posn);
                 baby.uses = name.substr(posn+1);
-                Tree = Insert(baby, Tree);
                 BabiesIndex++; count++;
-                break;
-                
-            }
-		    case 2:
-            {
-                //size_t pos = line.find(" ");
-                //baby.rank = line.substr(0, pos);                     // Value before first whitespace
-                //name = line.substr(pos+1);                           // name = whole sentence after first whitespace
-                //size_t posn = name.find(" ");                               // i.e second white space
-                //baby.name = name.substr(0, posn);
-                //baby.uses = name.substr(posn+1);
-                //Tree = Insert(baby, Tree);
-                BabiesIndex++;
-                count = 1;
-                break;
-            }
-	    }
+        
+                if(BabiesIndex % 2 == 0)
+                    baby.gender = "male";
+                else
+                    baby.gender = "female";
+                Tree = Insert(baby, Tree);
+        
+
 	}
     cout << "Initializing from babies.txt: " << BabiesIndex << "lines/records" << endl;
     string key = "";
